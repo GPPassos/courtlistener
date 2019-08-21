@@ -1,7 +1,10 @@
 # Set the hostname or IP of the Redis host. Note that this value is understood
 # in the context of the docker container. E.g. "localhost" is the localhost of
 # the docker image, not of the host of the docker image, where this file lives.
-REDIS_HOST = 'redis'
+REDIS_HOST = 'cl-redis'
+SOLR_HOST = 'http://cl-solr:8983'
+DOCKER_SELENIUM_HOST = 'http://cl-selenium:4444/wd/hub'
+DOCKER_DJANGO_HOST = 'cl-django'
 
 # Use unix socket connections to the default DB
 DATABASES['default']['HOST'] = ''

@@ -11,15 +11,22 @@ RUN apt-get update --option "Acquire::Retries=3" --quiet=2 && \
         --no-install-recommends \
         --assume-yes \
         --quiet=2 \
-        antiword docx2txt ghostscript imagemagick libav-tools libffi-dev \
+        # antiword docx2txt ghostscript imagemagick libav-tools libffi-dev \ # libav-tools is not distributed in ubuntu anymore, using ffmpeg
+        antiword docx2txt ghostscript imagemagick ffmpeg libffi-dev \
         libwpd-tools libxml2-dev libxslt-dev poppler-utils \
-        python-dev tesseract-ocr
+        python-dev
+
+# tesseract-ocr : Depends: libicu57 (>= 57.1-1~) but it is not installable \
 
 # Install Tesseract 4
-RUN echo "deb http://deb.debian.org/debian stretch-backports main" > \
-      /etc/apt/sources.list.d/backports.list && \
-    apt-get update && \
-    apt-get install -t stretch-backports -y tesseract-ocr tesseract-ocr-eng
+# RUN echo "deb http://deb.debian.org/debian stretch-backports main" > \
+#       /etc/apt/sources.list.d/backports.list && \
+#     apt-get update && \
+#     apt-get install -t stretch-backports -y libicu-dev tesseract-ocr tesseract-ocr-eng
+
+RUN apt-get update && \
+    apt-get install -y tesseract-ocr tesseract-ocr-eng
+
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt && \

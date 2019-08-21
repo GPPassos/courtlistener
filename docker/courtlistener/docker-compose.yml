@@ -3,6 +3,8 @@ version: "3.7"
 networks:
     cl_net_overlay:
         driver: overlay
+        attachable: true
+        # attachable for debugging only
 services:
     # Redis for caching
     cl-redis:
@@ -27,6 +29,9 @@ services:
             - ./initdb.d:/docker-entrypoint-initdb.d
         networks:
             - cl_net_overlay
+        deploy:
+          placement:
+            constraints: [node.role == manager]
 
     # Search engine
     cl-solr:
@@ -35,6 +40,8 @@ services:
         ports:
             - "8983:8983"
         # needs chmod 777
+        environment:
+          - CL_SOLR_CODE_DIR=/home/courtlistener-solr-server
         volumes:
             - ${CL_SOLR_CODE_DIR:-../../../courtlistener-solr-server}/data:/var/opt/solr/indices
             - ${CL_SOLR_CODE_DIR:-../../../courtlistener-solr-server}/solr/cores/:/etc/opt/solr:ro
